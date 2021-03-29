@@ -1,8 +1,23 @@
-# ubidots-mqtt-esp
+## This is fork of ubidots-mqtt-esp with an additional feature
 
 MQTT library for connecting to Ubidots using MQTT protocol and an ESP8266 chip.
+### Why this fork exists?
 
-## Setup
+I want to send mail along with this Ubidots Library.
+
+But, I have noticed that there are several Mail Sending libraries, which simplifies connecting to **SMTP** Server, receiving response from the same etc...
+Below are the drawbacks I faced :-
+
+* Credentials are stored as Headers. (Seriously?) [Example](https://www.instructables.com/ESP8266-GMail-Sender/)
+* They're using new instance of `WifiClient` and connecting it to same network. It's really not necessary. [Same Example](https://www.instructables.com/ESP8266-GMail-Sender/)
+* Some of them are having [issues](https://github.com/connornishijima/AlertMe/issues/5) with latest Arduino version. [Example](https://github.com/connornishijima/AlertMe)
+ 
+
+This fork exposes a class function **sendMail**, which contains all the parameters as function parameters. Fully Customizable.
+
+
+
+### Setup
 
 1. Go to the Arduino IDE, click on Files -> Preferences and enter http://arduino.esp8266.com/stable/package_esp8266com_index.json into Additional Board Manager URLs field. You can add multiple URLs, separating them with commas
 2. Open Boards Manager from Tools -> Board menu and install esp8266 platform (and don’t forget to select your ESP8266 board from Tools > Board menu after installation)
@@ -12,10 +27,6 @@ MQTT library for connecting to Ubidots using MQTT protocol and an ESP8266 chip.
 6. Go to Sketch/Program -> Include Library -> Library Manager and install the PubSubClient library 
 7. Close the Arduino IDE and open it again.
 8. If you are using windows, please install the appropiate driver for your ESP board (CH340G if you are using a LoLin board or CP2102 if you are using an AMICA board)
-
-# Documentation
-
-## Constructor
 
 ### Ubidots
 
@@ -81,6 +92,19 @@ ubidotsSubscribe(char* deviceLabel, char* variableLabel);
 wifiConnection(char* ssid, char* pass);
 ```
 > Connect via Wifi to the specified SSID.
+
+```
+bool sendMail(
+      String smtpServer,
+      int PORT,
+      String fromEmailBase64,
+      String fromPasswordBase64,
+      String fromEmail,
+      String toEmail,
+      String subject,
+      String message);
+```
+> Sends Mail with above properties.
 
 # Examples
 
