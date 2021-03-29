@@ -40,43 +40,55 @@ Modified by: Jose Garcia
 
 #define META_DEBUG Serial
 
-typedef struct Value {
-  char* _variableLabel;
+typedef struct Value
+{
+  char *_variableLabel;
   float _value;
-  char* _context;
-  char* _timestamp;
+  char *_context;
+  char *_timestamp;
 } Value;
 
-class Ubidots {
- private:
-  void (*callback)(char*, uint8_t*, unsigned int);
-  void initialize(char* token, char* clientName);
+class Ubidots
+{
+private:
+  void (*callback)(char *, uint8_t *, unsigned int);
+  void initialize(char *token, char *clientName);
   WiFiClient espClient;
   PubSubClient _client = PubSubClient(espClient);
-  char* _clientName;
+  char *_clientName;
   bool _debug = false;
   uint8_t currentValue;
-  char* _password;
-  char* _server;
-  char* _ssid;
-  char* _token;
-  Value* val;
+  char *_password;
+  char *_server;
+  char *_ssid;
+  char *_token;
+  Value *val;
+  byte emailResp();
 
- public:
-  Ubidots(char* token);
-  Ubidots(char* token, char* clientName);
-  bool add(char* variableLabel, float value);
-  bool add(char* variableLabel, float value, char* context);
-  bool add(char* variableLabel, float value, char* context, char* timestamp);
-  void begin(void (*callback)(char*, uint8_t*, unsigned int));
+public:
+  Ubidots(char *token);
+  Ubidots(char *token, char *clientName);
+  bool add(char *variableLabel, float value);
+  bool add(char *variableLabel, float value, char *context);
+  bool add(char *variableLabel, float value, char *context, char *timestamp);
+  void begin(void (*callback)(char *, uint8_t *, unsigned int));
   bool connected();
   bool loop();
-  bool ubidotsSubscribe(char* deviceLabel, char* variableLabel);
-  bool ubidotsPublish(char* deviceLabel);
-  void ubidotsSetBroker(char* broker);
+  bool ubidotsSubscribe(char *deviceLabel, char *variableLabel);
+  bool ubidotsPublish(char *deviceLabel);
+  void ubidotsSetBroker(char *broker);
   void reconnect();
   void setDebug(bool debug);
-  bool wifiConnection(char* ssid, char* pass);
+  bool wifiConnection(char *ssid, char *pass);
+  bool sendMail(
+      String smtpServer,
+      int PORT,
+      String fromEmailBase64,
+      String fromPasswordBase64,
+      String fromEmail,
+      String toEmail,
+      String subject,
+      String message);
 };
 
 #endif
